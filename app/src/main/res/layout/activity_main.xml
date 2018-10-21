@@ -28,9 +28,12 @@
         android:gravity="center"
         android:text="Take a pic" />
 
-    <com.twitter.sdk.android.core.identity.TwitterLoginButton
-        android:id="@+id/login_button"
+    <Button
+        android:id="@+id/sendTweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="viewStart" />
+
+        android:gravity="center"
+        android:text="Share Tweet"
+        android:visibility="gone"/>
 </LinearLayout>

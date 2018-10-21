@@ -16,16 +16,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.Image;
 import com.google.protobuf.ByteString;
+import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private String mCurrentPhotoPath, base64String;
     private String tagString;
+    Uri photoURI = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
             // Ensure that there's a camera activity to handle the intent
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 // Create the File where the photo should go
-                Uri photoURI = null;
+                // Uri photoURI = null;
                 try {
-                    photoURI = FileProvider.getUriForFile(context,
+                    this.photoURI = FileProvider.getUriForFile(context,
                             "dilipati.snaptagger.fileprovider", createImageFile());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -111,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
                     this.getTags(responses);
                     System.out.println("VISION API HAS RETURNED A RESULT");
 
-                    Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show();
+                    this.displayTags();
+
+
                 }
             }
         } catch (NullPointerException | OutOfMemoryError e) {
@@ -128,6 +135,38 @@ public class MainActivity extends AppCompatActivity {
         TagInjector injector = new TagInjector(convert.getTags());
         this.tagString = injector.getTags();
 
+    }
+
+    private void displayTags() {
+        Button clickPictureButton = findViewById(R.id.clickPictureButton);
+        clickPictureButton.setVisibility(View.GONE);
+
+        EditText tagView = findViewById(R.id.editTagText);
+        tagView.setText(this.tagString);
+        tagView.setVisibility(View.VISIBLE);
+
+        Button twitterLoginButton = findViewById(R.id.sendTweet);
+        twitterLoginButton.setVisibility(View.VISIBLE);
+        twitterLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendTweetIntent();
+                Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendTweetIntent() {
+        /*
+        Uri imageUri = FileProvider.getUriForFile(MainActivity.this,
+                BuildConfig.APPLICATION_ID + ".file_provider",
+                new File("/path/to/image"));
+                */
+
+        TweetComposer.Builder builder = new TweetComposer.Builder(this)
+                .text(this.tagString)
+                .image(this.photoURI);
+        builder.show();
     }
 
     private File createImageFile() throws IOException {
