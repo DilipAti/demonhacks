@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private File storageDir;
     private Context context;
     private String mCurrentPhotoPath, base64String;
+    private String tagString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     labelTask.execute(gcpImage);
 
                     List<AnnotateImageResponse> responses = labelTask.get();
+                    this.getTags(responses);
                     System.out.println("VISION API HAS RETURNED A RESULT");
 
                     Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show();
@@ -119,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private void getTags(List<AnnotateImageResponse> list){
+        RelevantTags convert = new RelevantTags(list);
+        TagInjector injector = new TagInjector(convert.getTags());
+        this.tagString = injector.getTags();
+
     }
 
     private File createImageFile() throws IOException {
