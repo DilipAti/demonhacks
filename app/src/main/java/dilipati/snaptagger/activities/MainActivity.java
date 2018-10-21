@@ -1,6 +1,5 @@
 package dilipati.snaptagger.activities;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,19 +13,25 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.cloud.vision.v1.AnnotateImageResponse;
+import com.google.cloud.vision.v1.Image;
+import com.google.protobuf.ByteString;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import dilipati.snaptagger.R;
+import labeldetection.LabelDetectorTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,11 +85,27 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode != RESULT_CANCELED) {
                 if (requestCode == 0 && resultCode == RESULT_OK) {
                     ImageView image = findViewById(R.id.image);
-                    base64String = setImageAndReturnBase64String(image);
+                    //base64String = setImageAndReturnBase64String(image);
+                    byte[] imgByteArr = setImageAndReturnBase64String(image);
+                    ByteString imgByteStr = ByteString.copyFrom(imgByteArr);
+                    Image gcpImage = Image.newBuilder().setContent(imgByteStr).build();
+                    LabelDetectorTask labelTask =  new LabelDetectorTask(this.context);
+
+                    System.out.println("MAKING REQUEST TO VISION API");
+                    labelTask.execute(gcpImage);
+
+                    List<AnnotateImageResponse> responses = labelTask.get();
+                    System.out.println("VISION API HAS RETURNED A RESULT");
+
                     Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (NullPointerException | OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -103,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
-    private String setImageAndReturnBase64String(ImageView imageView) throws NullPointerException, OutOfMemoryError {
+    private byte[] setImageAndReturnBase64String(ImageView imageView) throws NullPointerException, OutOfMemoryError {
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
         if (bitmap == null) {
@@ -122,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        //return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return byteArray;
     }
 
     private boolean runtimePermissionsRequest() {
