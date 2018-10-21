@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.cloud.vision.v1.AnnotateImageResponse;
@@ -141,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
         Button clickPictureButton = findViewById(R.id.clickPictureButton);
         clickPictureButton.setVisibility(View.GONE);
 
+        TextView textView = findViewById(R.id.tagsGeneratedText);
+        textView.setVisibility(View.VISIBLE);
         EditText tagView = findViewById(R.id.editTagText);
         tagView.setText(this.tagString);
         tagView.setVisibility(View.VISIBLE);

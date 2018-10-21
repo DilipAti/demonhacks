@@ -16,7 +16,7 @@ public class RelevantTags {
         for(AnnotateImageResponse resList : originList){
             List<EntityAnnotation> l = resList.getLabelAnnotationsList();
             for(EntityAnnotation entity : l){
-                if(entity.getScore()>= 0.6){
+                if(entity.getScore()>= 0.4){
                     this.annotations.add(entity);
                 }
             }

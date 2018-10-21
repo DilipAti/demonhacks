@@ -7,7 +7,7 @@ public class Tags {
 
     private String[] tagArr;
     public Tags(){
-       String tags = "#love, #instagood, #photooftheday, #beautiful, #happy, #cute, #tbt, #like4like, #followme, #picoftheday, #follow, #art, #instadaily, #repost, #instalike, #likeforlike, #igers, #tagsforlikes, #follow4follow, #nofilter, #life, #amazing, #instamood, #instagram, #photography, #photo, #followforfollow, #bestoftheday, #vsco, #l4l, #f4f, #swag, #motivation, #cool, #lol, #instapic, #funny, #tflers, #yummy, #lifestyle, #hot, #instafood, #handmade, #inspiration, #instacool, #goodmorning, #iphoneonly";
+       String tags = "#love, #instagood, #photooftheday, #millenial_stuff, #hireus, #cute, #tbt, #like4like, #followme, #picoftheday, #follow, #art, #instadaily, #repost, #instalike, #iswearimhuman, #igers, #tagsforlikes, #follow4follow, #nofilter, #thanosdidnothingwrong, #amazing, #instamood, #instagramisnotthis, #photography, #humanmade, #imsocool, #bestoftheday, #demonhacks, #swag, #motivation, #lol, #instapic, #funny, #needsleep, #yummy, #lifestyle, #hot, #instafood, #no_life, #inspiration, #instacool, #goodmorning, #iphoneonly";
        this.tagArr = tags.split(", ");
     }
 

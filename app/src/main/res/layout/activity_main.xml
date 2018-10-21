@@ -10,30 +10,56 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="403dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="360dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="The tags generated for the image are:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/tagsGeneratedText"
+        android:visibility="invisible"/>
     <EditText
         android:id="@+id/editTagText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="italic"
         android:ems="10"
         android:inputType="textPersonName"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/clickPictureButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:background="@drawable/button_rounded_corners"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center"
-        android:text="Take a pic" />
+        android:text="Click Picture" />
 
     <Button
         android:id="@+id/sendTweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:background="@drawable/button_rounded_corners"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center"
         android:text="Share Tweet"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 </LinearLayout>
